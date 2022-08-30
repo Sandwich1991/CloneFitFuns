@@ -14,7 +14,7 @@ public class PlayerController : MonoBehaviour
 
     private string _stepSoundPath = "Sounds/Walk";
     
-    private int _moveBlockMask = (1 << (int)Define.Layer.Block) | (1 << (int)Define.Layer.EventObject);
+    private int _moveBlockMask = (1 << (int)Define.Layer.Block) | (1 << (int)Define.Layer.Clickable);
     
     // Property
     Define.PlayerState PlayerState
@@ -93,7 +93,6 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
-        // FMS
         switch (PlayerState)
         {
             case Define.PlayerState.Idle:

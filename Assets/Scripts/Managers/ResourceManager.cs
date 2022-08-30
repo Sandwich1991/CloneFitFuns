@@ -29,6 +29,11 @@ public class ResourceManager
 
         return go;
     }
+
+    public void Destroy(GameObject go)
+    {
+        Object.Destroy(go);
+    }
 }
 
 

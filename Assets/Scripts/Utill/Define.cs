@@ -32,7 +32,7 @@ public class Define
     public enum Layer
     {
         Block = 6,
-        EventObject = 7,
+        Clickable = 7,
     }
 
 }

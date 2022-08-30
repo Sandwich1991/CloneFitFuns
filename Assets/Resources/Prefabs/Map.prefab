@@ -1160,9 +1160,10 @@ GameObject:
   - component: {fileID: 1828790633448049782}
   - component: {fileID: 1828790633448049783}
   - component: {fileID: 1828790633448050568}
-  - component: {fileID: 1828790633448050569}
+  - component: {fileID: 8575331840528025892}
+  - component: {fileID: 1859237601097959098}
   m_Layer: 7
-  m_Name: Cube
+  m_Name: MediaCube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1247,7 +1248,7 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &1828790633448050569
+--- !u!114 &8575331840528025892
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1269,6 +1270,20 @@ MonoBehaviour:
   _texturePropertyName: _MainTex
   _offset: {x: 0, y: 0}
   _scale: {x: 1, y: 1}
+--- !u!114 &1859237601097959098
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1828790633448050571}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 790fcb1bef6068a4682131e21066d7e8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _videoClip: {fileID: 32900000, guid: 1c2ecb5db4fe3fb41a350f61eea88635, type: 3}
+  _cubePlayer: {fileID: 1828790634100474408}
 --- !u!1 &1828790633877635210
 GameObject:
   m_ObjectHideFlags: 0
@@ -1451,7 +1466,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1828790633897507593}
   m_Layer: 0
-  m_Name: MedaiPlayers
+  m_Name: MediaPlayers
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1948,10 +1963,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _mediaSource: 0
-  _mediaReference: {fileID: 11400000, guid: dd228857f0bc21b4682b515c2b698543, type: 2}
+  _mediaReference: {fileID: 0}
   _mediaPath:
-    _pathType: 2
-    _path: 
+    _pathType: 3
+    _path: Resources/Video/gradation.mp4
   _fallbackMediaHints:
     transparency: 0
     alphaPacking: 0

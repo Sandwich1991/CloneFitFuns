@@ -14,10 +14,12 @@ public class Managers : MonoBehaviour
     private ResourceManager _resource = new ResourceManager();
     private PlayerManager _player = new PlayerManager();
     private SoundManager _sound = new SoundManager();
+    private VideoManager _video = new VideoManager();
     public static InputManager Input { get { return Instance._input; } }
     public static ResourceManager Resource { get { return Instance._resource; } }
     public static PlayerManager Player { get { return Instance._player; } }
     public static SoundManager Sound { get { return Instance._sound; } }
+    public static VideoManager Video { get { return Instance._video; } }
 
     // Methods
     static void init()

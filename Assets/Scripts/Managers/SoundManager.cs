@@ -109,7 +109,7 @@ public class SoundManager
         Play(audioClip, type, pitch);
     }
 
-    void Mute()
+    public void Mute()
     {
         foreach (AudioSource audioSource in _audioSources)
         {
@@ -119,7 +119,7 @@ public class SoundManager
         IsPlaying = Define.SoundState.Mute;
     }
 
-    void UnMute()
+    public void UnMute()
     {
         foreach (AudioSource audioSource in _audioSources)
         {

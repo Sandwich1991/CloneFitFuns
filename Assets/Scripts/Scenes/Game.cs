@@ -5,9 +5,6 @@ using UnityEngine;
 
 public class Game : MonoBehaviour
 {
-    private GameObject _map;
-    private string _mapPath = "Map";
-
     private GameObject _mainUI;
     private string _mainUIPath = "MainUI";
     
@@ -17,10 +14,10 @@ public class Game : MonoBehaviour
     private Camera _camera;
     private CameraController _cameraController;
 
+    private string _bgmPath = "Sounds/BGM_03";
+
     private void Start()
     {
-        _map = Managers.Resource.Instantiate(_mapPath);
-
         _mainUI = Managers.Resource.Instantiate(_mainUIPath);
         
         _player = Managers.Player.GeneratePlayer(_playerPos);
@@ -29,6 +26,6 @@ public class Game : MonoBehaviour
         _cameraController = _camera.gameObject.AddComponent<CameraController>();
         _cameraController._player = _player;
         
-        Managers.Sound.Play("Sounds/BGM_02", Define.SoundType.Bgm, 1.0f);
+        Managers.Sound.Play(_bgmPath, Define.SoundType.Bgm, 1.0f);
     }
 }
