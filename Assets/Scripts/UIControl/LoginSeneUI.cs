@@ -5,7 +5,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class NicknameComfirmButton : MonoBehaviour
+public class LoginSeneUI : MonoBehaviour
 {
     [SerializeField] private InputField _nicknameInput;
     [SerializeField] private GameObject _warningWindow;
@@ -44,7 +44,7 @@ public class NicknameComfirmButton : MonoBehaviour
         _nicknameCancelButton.onClick.AddListener(() => _confirmWindow.SetActive(false));
     }
 
-    public void Comfirm()
+    public void ComfirmButton()
     {
         if (IsInputEmpty())
             return;
