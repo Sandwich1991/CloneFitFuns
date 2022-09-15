@@ -6,12 +6,6 @@ public class ResourceManager
 {
     public T Load<T>(string path) where T : Object
     {
-        // if (typeof(T) == typeof(GameObject))
-        // {
-        //     int idx = path.LastIndexOf('/');
-        //     if (idx > 1)
-        //         path = path.Substring(idx + 1);
-        // }
         return Resources.Load<T>(path);
     }
     

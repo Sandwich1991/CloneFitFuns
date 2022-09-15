@@ -34,5 +34,11 @@ public class Define
         Block = 6,
         Clickable = 7,
     }
+    
+    public enum Scene
+    {
+        Login,
+        Game,
+    }
 
 }

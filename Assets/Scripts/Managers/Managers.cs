@@ -15,11 +15,13 @@ public class Managers : MonoBehaviour
     private PlayerManager _player = new PlayerManager();
     private SoundManager _sound = new SoundManager();
     private VideoManager _video = new VideoManager();
+    private SceneManagerEX _sceneManager = new SceneManagerEX();
     public static InputManager Input { get { return Instance._input; } }
     public static ResourceManager Resource { get { return Instance._resource; } }
     public static PlayerManager Player { get { return Instance._player; } }
     public static SoundManager Sound { get { return Instance._sound; } }
     public static VideoManager Video { get { return Instance._video; } }
+    public static SceneManagerEX Scene { get { return Instance._sceneManager; } }
 
     // Methods
     static void init()
@@ -41,7 +43,7 @@ public class Managers : MonoBehaviour
         }
     }
 
-    void Clear()
+    public static void Clear()
     {
         Input.Clear();
     }
