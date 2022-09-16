@@ -11,16 +11,6 @@ public class ResourceManager
     {
         return Resources.Load<T>(path);
     }
-
-    public T LoadAsync<T>(string path, Action<Object> evt) where T : Object
-    {
-        var obj = Resources.LoadAsync(path);
-        
-        if (typeof(T) == typeof(GameObject))
-            evt.Invoke(obj.asset as GameObject);
-        
-        return obj.asset as T;
-    }
     
     public GameObject Instantiate(string path, Transform parent = null)
     {
@@ -35,10 +25,8 @@ public class ResourceManager
         go.name = original.name;
         
         return go;
-
-        // LoadAsync(path, (obj) => MonoHelper.Instantiate(obj, parent));
     }
-
+    
     public void Destroy(GameObject go)
     {
         Object.Destroy(go);

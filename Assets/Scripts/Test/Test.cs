@@ -31,6 +31,7 @@ public class Test : MonoBehaviour
         
         yield break;
     }
+    
     private void Start()
     {
         ResourceLoad("Prefabs/Cube", (obj) => _testObject = Instantiate(obj));
