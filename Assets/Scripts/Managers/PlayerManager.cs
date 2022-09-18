@@ -14,6 +14,11 @@ public class PlayerManager
         set { _nickname = value; }
     }
     
+    public Vector3 PlayerPos
+    {
+        get { return _player.transform.position; }
+    }
+    
     public GameObject GeneratePlayer(Vector3 pos)
     {
         _player = Managers.Resource.Instantiate("Character");
