@@ -17,6 +17,7 @@ public class PlayerManager
     public Vector3 PlayerPos
     {
         get { return _player.transform.position; }
+        set { _player.transform.position = value; }
     }
     
     public GameObject GeneratePlayer(Vector3 pos)
