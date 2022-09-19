@@ -39,8 +39,14 @@ public class Managers : MonoBehaviour
                 _instance = go.GetComponent<Managers>();
                 
                 _instance._sound.init();
+                _instance._sceneManager.init();
             }
         }
+    }
+
+    public static void CoroutineHelper(IEnumerator coroutine)
+    {
+        _instance.StartCoroutine(coroutine);
     }
 
     public static void Clear()
