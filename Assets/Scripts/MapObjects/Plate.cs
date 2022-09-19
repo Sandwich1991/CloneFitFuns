@@ -1,22 +1,24 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using DG.Tweening;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
 public class Plate : MonoBehaviour
 {
     private MeshRenderer _meshRenderer;
-    private Material _originmaterial;
-    private List<Material> _materials;
-    private int _listLength;
+    private Material _material;
+    
     private Vector3 _originScale;
-    private float _expandRatio = 1.5f;
+    private float _expandRatio = 1.3f;
+    private Color _originColor;
 
     void PlateColorAndSizeChange()
     {
-        gameObject.transform.localScale = new Vector3(_originScale.x * _expandRatio, _originScale.y, _originScale.z * _expandRatio);
-        _meshRenderer.material = _materials[Random.Range(0, _listLength - 1)];
+        gameObject.transform.DOScale(transform.localScale * _expandRatio, 0.3f);
+        _meshRenderer.material.color = new Color(Random.Range(0, 255) / 255f, Random.Range(0, 255) / 255f,
+            Random.Range(0, 255) / 255f);
     }
     
     private void OnTriggerEnter(Collider other)
@@ -26,16 +28,15 @@ public class Plate : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        _meshRenderer.material = _originmaterial;
-        gameObject.transform.localScale = _originScale;
+        _material.color = _originColor;
+        gameObject.transform.DOScale(_originScale, 0.3f);
     }
     
     private void Start()
     {
         _originScale = gameObject.transform.localScale;
         _meshRenderer = GetComponent<MeshRenderer>();
-        _originmaterial = _meshRenderer.material;
-        _materials = Utills.GetFileListInDir<Material>("PlateColor/");
-        _listLength = _materials.Count;
+        _material = _meshRenderer.material;
+        _originColor = _material.color;
     }
 }
