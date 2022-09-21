@@ -647,9 +647,9 @@ GameObject:
   - component: {fileID: 1110282184291717952}
   - component: {fileID: 6203237960150857879}
   - component: {fileID: 5458175622698361579}
-  - component: {fileID: 2193607554355976754}
+  - component: {fileID: 8735235997135953337}
   m_Layer: 5
-  m_Name: UploadPostUI
+  m_Name: EditPostUI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -718,7 +718,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &2193607554355976754
+--- !u!114 &8735235997135953337
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -727,16 +727,18 @@ MonoBehaviour:
   m_GameObject: {fileID: 3241518624948700270}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0f1259f12e823934d9bbf7997bb8a61c, type: 3}
+  m_Script: {fileID: 11500000, guid: f1e15a92e62b6b44d9b1068853d51199, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _titleInput: {fileID: 8518473163112201531}
   _title: {fileID: 7179682029758141294}
   _contentInput: {fileID: 7765509052125296500}
   _content: {fileID: 6372362496627022780}
+  _postId: 
   _confirmButton: {fileID: 8469482955818867189}
   _cancelButton: {fileID: 1998439021530480840}
-  _url: http://52.78.82.4/posts/post
+  _exitButton: {fileID: 383946638502699958}
+  _url: http://52.78.82.4/posts/
 --- !u!1 &3476239353582559148
 GameObject:
   m_ObjectHideFlags: 0
@@ -1123,7 +1125,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\uAC8C\uC2DC\uD558\uAE30"
+  m_Text: "\uC218\uC815\uD558\uAE30"
 --- !u!1 &5836370705876775409
 GameObject:
   m_ObjectHideFlags: 0

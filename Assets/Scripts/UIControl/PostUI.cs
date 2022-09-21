@@ -11,9 +11,11 @@ public class PostUI : MonoBehaviour
     [SerializeField] private Button _editButton;
     [SerializeField] private Button _deleteButton;
     
-    [SerializeField] private Text _title;
     [SerializeField] private Text _date;
+    [SerializeField] private Text _title;
+    [SerializeField] private Text _titlePlaceHolder;
     [SerializeField] private Text _content;
+    [SerializeField] private Text _contentPlaceHolder;
 
     private string _url = "http://52.78.82.4/posts";
 
@@ -28,6 +30,7 @@ public class PostUI : MonoBehaviour
     {
         _exitButton.onClick.AddListener(() => Managers.Resource.Destroy(gameObject));
         _deleteButton.onClick.AddListener(DeleteButton);
+        _editButton.onClick.AddListener(EditButton);
         
         _title.text = PostData.title;
         _date.text = PostData.createdAt.Substring(0, 10);
@@ -43,29 +46,40 @@ public class PostUI : MonoBehaviour
         window.ConfirmButton.onClick.AddListener(() =>
         {
             Managers.Resource.Destroy(window.gameObject);
-            StartCoroutine(DeletePost());
+            DeletePost();
         });
     }
 
-    IEnumerator DeletePost()
+    void EditButton()
     {
-        UnityWebRequest www = UnityWebRequest.Delete(_url + "/" + PostData.postId);
-
-        yield return www.SendWebRequest();
-
-        if (www.error == null)
-        {
-            ConfirmWindow window = Managers.Resource.Instantiate("ConfirmWindow", gameObject.transform)
-                .GetComponent<ConfirmWindow>();
-
-            window.Text = "삭제되었습니다!";
-            window.ConfirmButton.onClick.AddListener(() => Managers.Resource.Destroy(gameObject));
+        WarningWindow window = Managers.Resource.Instantiate("WarningWindow", gameObject.transform)
+            .GetComponent<WarningWindow>();
+        window.Text = "게시물을 수정하시겠습니까?";
             
-            Managers.Web.PostChanged();
-        }
-        else
-            Debug.Log(www.error);
+        window.ConfirmButton.onClick.AddListener(() =>
+        {
+            Managers.Resource.Destroy(window.gameObject);
+            EditPost();
+        });
+    }
+
+    // 포스트 삭제
+    void DeletePost()
+    {
+        StartCoroutine(Managers.Web.DeletePost(_url, _postData.postId, gameObject.transform));
     }
     
-    
+    // 포스트 수정
+    void EditPost()
+    {
+        EditPostUI editPostUI = Managers.Resource.Instantiate("EditPostUI", gameObject.transform.parent)
+            .GetComponent<EditPostUI>();
+        
+        Managers.Resource.Destroy(gameObject);
+
+        // 업로드 ui의 텍스트를 원래 포스트의 내용으로 미리 채움
+        editPostUI._titleInput.text = _postData.title;
+        editPostUI._contentInput.text = _postData.content;
+        editPostUI._postId = _postData.postId;
+    }
 }

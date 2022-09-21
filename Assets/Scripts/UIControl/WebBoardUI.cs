@@ -7,29 +7,7 @@ using UnityEngine.Networking;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
 
-[Serializable]
-public class PostData
-{
-    public string _id;
-    public string title;
-    public string content;
-    public string createdAt;
-    public string updateAt;
-    public string postId;
-    public string id;
-}
 
-[Serializable]
-public class PostList
-{
-    public PostData[] getPostList;
-}
-
-[Serializable]
-public class DetailPost
-{
-    public PostData getDetailPost;
-}
 
 public class WebBoardUI : MonoBehaviour
 {
@@ -38,69 +16,48 @@ public class WebBoardUI : MonoBehaviour
     [SerializeField] private Button _exitButton;
     [SerializeField] private Button _uploadButton;
 
-    string _url = "http://52.78.82.4/posts";
+    [SerializeField] string _url = "http://52.78.82.4/posts";
 
     private void Start()
     {
         _exitButton.onClick.AddListener(() => Managers.Resource.Destroy(gameObject));
         _uploadButton.onClick.AddListener(() => Managers.Resource.Instantiate("UploadPostUI", gameObject.transform));
-        StartCoroutine(GetPosts());
+        
+        GetPosts();
 
         Managers.Web.RefreshAction += Refresh;
     }
     
-    IEnumerator GetPosts()
+    // 웹 매니져의 GetPosts 코루틴 실행
+    // GetPosts((url(주소), tranform(경고창 띄울 부모UI), evt(받아온 포스트목록으로 취할 액션 ));
+    void GetPosts()
     {
-        UnityWebRequest www = UnityWebRequest.Get(_url);
-        
-        yield return www.SendWebRequest();
-
-        if (www.error == null)
+        StartCoroutine(Managers.Web.GetPosts(_url, gameObject.transform, (postList) =>
         {
-            string loadedText = www.downloadHandler.text;
-
-            PostList postList =  JsonUtility.FromJson<PostList>(loadedText);
-
             foreach (var posting in postList.getPostList)
             {
                 Post post = Managers.Resource.Instantiate("Post", _posts.transform).GetComponent<Post>();
 
-                // post.PostData = posting;
+                post.PostData = posting;
 
-                post.Title = posting.title;
-
-                post.Content = posting.content;
-
-                post.Date = posting.createdAt.Substring(0, 10);
-
-                post.Button.onClick.AddListener(()=>
-                {
-                    StartCoroutine(GetPost(posting._id));
-                });
+                post.Button.onClick.AddListener(() => GetPost(posting.postId) );
             }
-        }
-        else
-            Debug.Log("Error!");
+        }));
     }
-
-    IEnumerator GetPost(string id)
+    
+    // 웹 매니져의 GetPost 코루틴 실행 (포스트 상세 조회)
+    // GetPost((url(주소), id(포스트id), tranform(경고창 띄울 부모UI), evt(받아온 포스트목록으로 취할 액션 ));
+    void GetPost(string id)
     {
-        UnityWebRequest www = UnityWebRequest.Get(_url + "/" + id);
-
-        yield return www.SendWebRequest();
-
-        if (www.error == null)
+        StartCoroutine(Managers.Web.GetPost(_url, id, gameObject.transform, (postData) =>
         {
-            DetailPost post = JsonUtility.FromJson<DetailPost>(www.downloadHandler.text);
+            PostUI postUI = Managers.Resource.Instantiate("PostUI", gameObject.transform).GetComponent<PostUI>();
 
-            PostUI postUI = Managers.Resource.Instantiate("PostUi", gameObject.transform).GetComponent<PostUI>();
-
-            postUI.PostData = post.getDetailPost;
-        }
-        else
-            Debug.Log(www.error);
+            postUI.PostData = postData.getDetailPost;
+        }));
     }
-
+    
+    // 포스트 수정이나 삭제가 이루어지면 포스트 목록을 새로고침
     void Refresh()
     {
         Post[] posts = _posts.GetComponentsInChildren<Post>();
@@ -110,6 +67,6 @@ public class WebBoardUI : MonoBehaviour
             Managers.Resource.Destroy(post.gameObject);
         }
         
-        StartCoroutine(GetPosts());
+        GetPosts();
     }
 }

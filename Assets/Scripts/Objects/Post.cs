@@ -6,12 +6,12 @@ using UnityEngine.UI;
 
 public class Post : MonoBehaviour
 {
-    // private PostData _postData;
-    // public PostData PostData
-    // {
-    //     get { return _postData; }
-    //     set { _postData = value; }
-    // }
+    private PostData _postData;
+    public PostData PostData
+    {
+        get { return _postData; }
+        set { _postData = value; }
+    }
     
     [SerializeField] private Text _title;
     public string Title
@@ -41,12 +41,12 @@ public class Post : MonoBehaviour
         Button = GetComponent<Button>();
     }
     
-    // private void Start()
-    // {
-    //     _title.text = _postData.title;
-    //     _content.text = _postData.content;
-    //     _date.text = _postData.createdAt.Substring(0, 10);
-    // }
+    private void Start()
+    {
+        _title.text = _postData.title;
+        _content.text = _postData.content;
+        _date.text = _postData.createdAt.Substring(0, 10);
+    }
     
     // todo 주석처리 부분에서 null 참조 에러 발생
 }
