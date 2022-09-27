@@ -17,8 +17,6 @@ public class EditPostUI : MonoBehaviour
     [SerializeField] private Button _cancelButton;
     [SerializeField] private Button _exitButton;
 
-    [SerializeField] private string _url = "http://52.78.82.4/posts/";
-
     private void Start()
     {
         _confirmButton.onClick.AddListener(EditPost);
@@ -28,7 +26,17 @@ public class EditPostUI : MonoBehaviour
 
     void EditPost()
     {
-        StartCoroutine(Managers.Web.EditPost(_url + _postId, _title.text, _content.text, gameObject.transform));
+        Managers.Web.PutPost(_postId, _title.text, _content.text, (succeed) =>
+        {
+            if (succeed)
+            {
+                Managers.UI.ConfirmWindow("수정이 완료되었습니다!", transform, true);
+            }
+            else
+            {
+                Managers.UI.ConfirmWindow("오류가 발생했습니다!", transform);
+            }
+        });
     }
 
     void EditCancel()
@@ -38,5 +46,6 @@ public class EditPostUI : MonoBehaviour
 
         window.Text = "수정을 취소하시겠습니까?";
         window.ConfirmButton.onClick.AddListener(() => Managers.Resource.Destroy(gameObject));
+        Managers.Resource.Destroy(gameObject);
     }
 }

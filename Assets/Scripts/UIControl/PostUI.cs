@@ -17,8 +17,6 @@ public class PostUI : MonoBehaviour
     [SerializeField] private Text _content;
     [SerializeField] private Text _contentPlaceHolder;
 
-    private string _url = "http://52.78.82.4/posts";
-
     private PostData _postData;
     public PostData PostData
     {
@@ -66,7 +64,18 @@ public class PostUI : MonoBehaviour
     // 포스트 삭제
     void DeletePost()
     {
-        StartCoroutine(Managers.Web.DeletePost(_url, _postData.postId, gameObject.transform));
+        Managers.Web.DeletePost(_postData.id, (succeed) =>
+        {
+            if (succeed)
+            {
+                Managers.UI.ConfirmWindow("삭제가 성공되었습니다!", transform, true);
+                Managers.Resource.Destroy(gameObject);
+            }
+            else
+            {
+                Managers.UI.ConfirmWindow("오류가 발생했습니다!", transform);
+            }
+        });
     }
     
     // 포스트 수정

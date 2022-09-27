@@ -91,8 +91,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3a215453c9f635546abb897fe8f01b4f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ConfirmButton: {fileID: 8716561433169878713}
   _text: {fileID: 2339119300402202723}
+  ConfirmButton: {fileID: 8716561433169878713}
 --- !u!1 &3036346570361089406
 GameObject:
   m_ObjectHideFlags: 0

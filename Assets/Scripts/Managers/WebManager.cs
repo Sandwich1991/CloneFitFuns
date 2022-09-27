@@ -50,35 +50,55 @@ public class WebManager
     {
         RefreshAction.Invoke();
     }
-
-    // 포스트 목록 조회
-    public IEnumerator GetPosts(string url, Transform uiParent, Action<PostList> evt)
+    
+    public void GetPosts(Action<PostList> evt)
     {
-        UnityWebRequest www = UnityWebRequest.Get(url);
-        
+        Managers.CoroutineHelper(GetPostsCoroutine(evt.Invoke));
+    }
+    
+    public void GetPost(string id, Action<DetailPost> evt)
+    {
+        Managers.CoroutineHelper(GetPostCoroutine(id, evt.Invoke));
+    }
+
+    public void CreatePost(string title, string content, Action<bool> haveSucceed)
+    {
+        Managers.CoroutineHelper(CreatePostCoroutine(title, content, haveSucceed.Invoke));
+    }
+    
+    public void PutPost(string id, string title, string content, Action<bool> haveSucceed)
+    {
+        Managers.CoroutineHelper(PutPostCoroutine(id, title, content, haveSucceed.Invoke));
+    }
+    
+    public void DeletePost(string id, Action<bool> haveSucceed)
+    {
+        Managers.CoroutineHelper(DeletePostCoroutine(id, haveSucceed.Invoke));
+    }
+    
+    
+    private IEnumerator GetPostsCoroutine(Action<PostList> evt)
+    {
+
+        UnityWebRequest www = UnityWebRequest.Get(Define.URL);
+
         yield return www.SendWebRequest();
 
         if (www.error == null)
         {
-            PostList postList =  JsonUtility.FromJson<PostList>(www.downloadHandler.text);
+            PostList postList = JsonUtility.FromJson<PostList>(www.downloadHandler.text);
 
             evt.Invoke(postList);
         }
         else
         {
-            ConfirmWindow window = Managers.Resource.Instantiate("ConfirmWindow", uiParent)
-                .GetComponent<ConfirmWindow>();
-
-            window.Text = "로드에 실패했습니다";
             Debug.Log(www.error);
-            window.ConfirmButton.onClick.AddListener( () => Managers.Resource.Destroy(window.gameObject));
         }
     }
     
-    // 포스트 상세 조회
-    public IEnumerator GetPost(string url, string id, Transform uiParent, Action<DetailPost> evt)
+    private IEnumerator GetPostCoroutine(string id, Action<DetailPost> evt)
     {
-        UnityWebRequest www = UnityWebRequest.Get(url + "/" + id);
+        UnityWebRequest www = UnityWebRequest.Get(Define.URL + "/" + id);
 
         yield return www.SendWebRequest();
 
@@ -90,117 +110,93 @@ public class WebManager
         }
         else
         {
-            ConfirmWindow window = Managers.Resource.Instantiate("ConfirmWindow", uiParent)
-                .GetComponent<ConfirmWindow>();
-
-            window.Text = "로드에 실패했습니다";
             Debug.Log(www.error);
-            window.ConfirmButton.onClick.AddListener( () => Managers.Resource.Destroy(window.gameObject));
         }
     }
     
-    // 포스트 생성
-    public IEnumerator CreatePost(string url, string title, string content, Transform uiParent)
+    private IEnumerator CreatePostCoroutine(string title, string content, Action<bool> haveSucceed)
     {
-        UploadPost post = new UploadPost(title, content);
-        string json = JsonUtility.ToJson(post);
-        byte[] body = Encoding.UTF8.GetBytes(json);
-
-        UnityWebRequest www = new UnityWebRequest(url, "POST");
-        www.uploadHandler = new UploadHandlerRaw(body);
-        www.downloadHandler = new DownloadHandlerBuffer();
-        www.SetRequestHeader("Content-Type", "application/json");
+        UnityWebRequest www = PostOrPutRequest("POST", title, content);
         
         yield return www.SendWebRequest();
-        
+
         if (www.error == null)
         {
-            ConfirmWindow window = Managers.Resource.Instantiate("ConfirmWindow", uiParent)
-                .GetComponent<ConfirmWindow>();
-        
-            window.Text = "게시가 완료되었습니다!";
-            window.ConfirmButton.onClick.AddListener(() => Managers.Resource.Destroy(uiParent.gameObject));
-            
-            Managers.Web.PostChanged();
+            haveSucceed.Invoke(true);
+            PostChanged();
         }
-        
+
         else
         {
-            ConfirmWindow window = Managers.Resource.Instantiate("ConfirmWindow", uiParent)
-                .GetComponent<ConfirmWindow>();
-        
-            window.Text = "게시를 실패했습니다.";
-            window.ConfirmButton.onClick.AddListener(() => Managers.Resource.Destroy(window.gameObject));
+            haveSucceed.Invoke(false);
             Debug.Log(www.error);
         }
         
         www.Dispose();
     }
     
-    // 포스트 수정
-    public IEnumerator EditPost(string url, string title, string content, Transform uiParent)
+    private IEnumerator PutPostCoroutine(string id, string title, string content, Action<bool> haveSucceed)
     {
-        UploadPost post = new UploadPost(title, content);
-        string json = JsonUtility.ToJson(post);
-        byte[] body = Encoding.UTF8.GetBytes(json);
-
-        UnityWebRequest www = new UnityWebRequest(url, "PUT");
-        www.uploadHandler = new UploadHandlerRaw(body);
-        www.downloadHandler = new DownloadHandlerBuffer();
-        www.SetRequestHeader("Content-Type", "application/json");
+        UnityWebRequest www = PostOrPutRequest("PUT", title, content, id);
         
         yield return www.SendWebRequest();
         
         if (www.error == null)
         {
-            ConfirmWindow window = Managers.Resource.Instantiate("ConfirmWindow", uiParent)
-                .GetComponent<ConfirmWindow>();
-        
-            window.Text = "수정이 완료되었습니다!";
-            window.ConfirmButton.onClick.AddListener(() => Managers.Resource.Destroy(uiParent.gameObject));
-            
-            Managers.Web.PostChanged();
+            haveSucceed.Invoke(true);
+            PostChanged();
         }
         
         else
         {
-            ConfirmWindow window = Managers.Resource.Instantiate("ConfirmWindow", uiParent)
-                .GetComponent<ConfirmWindow>();
-        
-            window.Text = "수정에 실패했습니다.";
-            window.ConfirmButton.onClick.AddListener(() => Managers.Resource.Destroy(window.gameObject));
+            haveSucceed.Invoke(false);
             Debug.Log(www.error);
         }
         
         www.Dispose();
     }
-
-    // 포스트 삭제
-    public IEnumerator DeletePost(string url, string id, Transform uiParent)
+    
+    private IEnumerator DeletePostCoroutine(string id, Action<bool> haveSucceed)
     {
-        UnityWebRequest www = UnityWebRequest.Delete(url + "/" + id);
+        UnityWebRequest www = UnityWebRequest.Delete(Define.URL + "/" + id);
 
         yield return www.SendWebRequest();
 
         if (www.error == null)
         {
-            ConfirmWindow window = Managers.Resource.Instantiate("ConfirmWindow", uiParent)
-                .GetComponent<ConfirmWindow>();
-
-            window.Text = "삭제되었습니다!";
-            window.ConfirmButton.onClick.AddListener(() => Managers.Resource.Destroy(uiParent.gameObject));
-            
-            Managers.Web.PostChanged();
+            haveSucceed.Invoke(true);
+            PostChanged();
         }
         else
         {
-            ConfirmWindow window = Managers.Resource.Instantiate("ConfirmWindow", uiParent)
-                .GetComponent<ConfirmWindow>();
-
-            window.Text = "삭제에 실패했습니다";
-            Debug.Log(www.error);
-            window.ConfirmButton.onClick.AddListener( () => Managers.Resource.Destroy(window.gameObject));
+            haveSucceed.Invoke(false);
         }
+    }
+    
+    
+    private UnityWebRequest PostOrPutRequest(string method, string title, string content, string id = null)
+    {
+        string url = null;
+
+        if (method == "POST")
+        {
+            url = Define.URL + "/post";
+        }
+        else
+        {
+            url = Define.URL + "/" + id;
+        }
+        
+        UploadPost post = new UploadPost(title, content);
+        string json = JsonUtility.ToJson(post);
+        byte[] body = Encoding.UTF8.GetBytes(json);
+
+        UnityWebRequest www = new UnityWebRequest(url, method);
+        www.uploadHandler = new UploadHandlerRaw(body);
+        www.downloadHandler = new DownloadHandlerBuffer();
+        www.SetRequestHeader("Content-Type", "application/json");
+
+        return www;
     }
 
 }

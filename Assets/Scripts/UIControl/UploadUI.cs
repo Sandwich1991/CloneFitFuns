@@ -17,9 +17,7 @@ public class UploadUI : MonoBehaviour
 
     [SerializeField] private Button _confirmButton;
     [SerializeField] private Button _cancelButton;
-    
-    [SerializeField] string _url = "http://52.78.82.4/posts/post";
-    
+
     private void Start()
     {
         _confirmButton.onClick.AddListener(() => UploadPost());
@@ -30,6 +28,16 @@ public class UploadUI : MonoBehaviour
     // 인풋필드의 텍스트를 이용해 포스트 생성
     void UploadPost()
     {
-        StartCoroutine(Managers.Web.CreatePost(_url, _title.text, _content.text, gameObject.transform));
+        Managers.Web.CreatePost(_title.text, _content.text, (succeed) =>
+        {
+            if (succeed)
+            {
+                Managers.UI.ConfirmWindow("게시에 성공했습니다!", transform, true);
+            }
+            else
+            {
+                Managers.UI.ConfirmWindow("게시에 실패했습니다!", transform);
+            }
+        } );
     }
 }

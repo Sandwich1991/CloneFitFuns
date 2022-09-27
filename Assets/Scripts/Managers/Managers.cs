@@ -17,6 +17,7 @@ public class Managers : MonoBehaviour
     private VideoManager _video = new VideoManager();
     private SceneManagerEX _sceneManager = new SceneManagerEX();
     private WebManager _web = new WebManager();
+    private UIManager _ui = new UIManager();
     public static InputManager Input { get { return Instance._input; } }
     public static ResourceManager Resource { get { return Instance._resource; } }
     public static PlayerManager Player { get { return Instance._player; } }
@@ -24,6 +25,7 @@ public class Managers : MonoBehaviour
     public static VideoManager Video { get { return Instance._video; } }
     public static SceneManagerEX Scene { get { return Instance._sceneManager; } }
     public static WebManager Web { get { return Instance._web; } }
+    public static UIManager UI { get { return Instance._ui; } }
 
     // Methods
     static void init()

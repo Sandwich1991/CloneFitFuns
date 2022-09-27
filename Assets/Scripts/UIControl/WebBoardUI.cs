@@ -16,8 +16,6 @@ public class WebBoardUI : MonoBehaviour
     [SerializeField] private Button _exitButton;
     [SerializeField] private Button _uploadButton;
 
-    [SerializeField] string _url = "http://52.78.82.4/posts";
-
     private void Start()
     {
         _exitButton.onClick.AddListener(() => Managers.Resource.Destroy(gameObject));
@@ -28,33 +26,48 @@ public class WebBoardUI : MonoBehaviour
         Managers.Web.RefreshAction += Refresh;
     }
     
-    // 웹 매니져의 GetPosts 코루틴 실행
-    // GetPosts((url(주소), tranform(경고창 띄울 부모UI), evt(받아온 포스트목록으로 취할 액션 ));
     void GetPosts()
     {
-        StartCoroutine(Managers.Web.GetPosts(_url, gameObject.transform, (postList) =>
+        Managers.Web.GetPosts((postList) =>
         {
-            foreach (var posting in postList.getPostList)
+            if (postList != null)
             {
-                Post post = Managers.Resource.Instantiate("Post", _posts.transform).GetComponent<Post>();
+                foreach (var postData in postList.getPostList)
+                {
+                    Post post = Managers.Resource.Instantiate("Post", _posts.transform).GetComponent<Post>();
 
-                post.PostData = posting;
+                    post.PostData = postData;
 
-                post.Button.onClick.AddListener(() => GetPost(posting.postId) );
+                    post.Button.onClick.AddListener(() => GetPost(postData.postId));
+                }
             }
-        }));
+            else
+            {
+                LoadFaliedWindow();
+            }
+        });
     }
     
-    // 웹 매니져의 GetPost 코루틴 실행 (포스트 상세 조회)
-    // GetPost((url(주소), id(포스트id), tranform(경고창 띄울 부모UI), evt(받아온 포스트목록으로 취할 액션 ));
     void GetPost(string id)
     {
-        StartCoroutine(Managers.Web.GetPost(_url, id, gameObject.transform, (postData) =>
+        Managers.Web.GetPost(id, (postData) =>
         {
-            PostUI postUI = Managers.Resource.Instantiate("PostUI", gameObject.transform).GetComponent<PostUI>();
+            if (postData != null)
+            {
+                PostUI postUI = Managers.Resource.Instantiate("PostUI", gameObject.transform).GetComponent<PostUI>();
 
-            postUI.PostData = postData.getDetailPost;
-        }));
+                postUI.PostData = postData.getDetailPost;
+            }
+            else
+            {
+                LoadFaliedWindow();
+            }
+        });
+    }
+
+    void LoadFaliedWindow()
+    {
+        Managers.UI.ConfirmWindow("불러오기에 실패했습니다!", transform);
     }
     
     // 포스트 수정이나 삭제가 이루어지면 포스트 목록을 새로고침

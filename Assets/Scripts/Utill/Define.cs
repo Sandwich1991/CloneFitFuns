@@ -41,4 +41,6 @@ public class Define
         Game,
     }
 
+    public static string URL = "http://52.78.82.4/posts";
+
 }
