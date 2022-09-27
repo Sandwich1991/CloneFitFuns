@@ -6,18 +6,17 @@ using UnityEngine.UI;
 
 public class NickNameTooltip : MonoBehaviour
 {
-    [SerializeField] private Canvas _canvas;
-    [SerializeField] private Text _nickname;
+    private Canvas _canvas;
+    [SerializeField] private Text nickname;
     private Camera _camera;
 
     private void Start()
     {
         _camera = Camera.main;
-        
+        _canvas = GetComponent<Canvas>();
         _canvas.renderMode = RenderMode.WorldSpace;
         _canvas.worldCamera = _camera;
-
-        _nickname.text = Managers.Player.Nickname;
+        nickname.text = Managers.Player.Nickname;
     }
 
     private void Update()

@@ -95,7 +95,7 @@ public class VideoController : MonoBehaviour, IPointerDownHandler, IPointerEnter
     public void OnClickExit()
     {
         Managers.Resource.Destroy(_videoPlayerUI);
-        Managers.Sound.IsPlaying = Define.SoundState.Playing;
+        Managers.Sound.IsPlaying = true;
     }
 
     public void OnClickWindowSize()

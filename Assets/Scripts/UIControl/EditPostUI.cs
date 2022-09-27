@@ -41,11 +41,9 @@ public class EditPostUI : MonoBehaviour
 
     void EditCancel()
     {
-        WarningWindow window = Managers.Resource.Instantiate("WarningWindow", transform)
-            .GetComponent<WarningWindow>();
-
-        window.Text = "수정을 취소하시겠습니까?";
-        window.ConfirmButton.onClick.AddListener(() => Managers.Resource.Destroy(gameObject));
-        Managers.Resource.Destroy(gameObject);
+        Managers.UI.WarningWindow("수정을 취소하시겠습니까?", transform, true, () =>
+        {
+            Managers.Resource.Destroy(gameObject);
+        });
     }
 }

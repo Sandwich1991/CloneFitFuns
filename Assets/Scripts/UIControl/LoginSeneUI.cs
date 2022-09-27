@@ -1,54 +1,31 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class LoginSeneUI : MonoBehaviour
 {
-    [SerializeField] private InputField _nicknameInput;
-    [SerializeField] private GameObject _warningWindow;
-    [SerializeField] private Button _warningComfirmButton;
-    [SerializeField] private GameObject _confirmWindow;
-    [SerializeField] private Text confirmWindowText;
-    [SerializeField] private Button _nicknameConfirmButton;
-    [SerializeField] private Button _nicknameCancelButton;
+    [SerializeField] private Text nickname;
+    [SerializeField] private Button confirmButton;
 
-    bool IsInputEmpty()
+    private void Start()
     {
-        if (_nicknameInput.text == String.Empty)
+        confirmButton.onClick.AddListener(GameStart);
+    }
+
+    void GameStart()
+    {
+        if (nickname.text == String.Empty)
         {
-            _warningWindow.SetActive(true);
-            _warningComfirmButton.onClick.AddListener(() => _warningWindow.SetActive(false));
-            return true;
+            Managers.UI.ConfirmWindow("닉네임을 입력해주세요", transform);
+            return;
         }
         else
         {
-            return false;
+            Managers.UI.WarningWindow($"게임을 시작합니다!", transform, false, () =>
+            {
+                Managers.Player.Nickname = nickname.text;
+                Managers.Scene.LoadScene(Define.Scene.Game);
+            });
         }
-    }
-
-    void StartGame()
-    {
-        _confirmWindow.SetActive(true);
-        confirmWindowText.text = $"{_nicknameInput.text}(으)로 캐릭터를 생성합니다!";
-
-        _nicknameConfirmButton.onClick.AddListener(() =>
-        {
-            _confirmWindow.SetActive(false);
-            Managers.Player.Nickname = _nicknameInput.text;
-            Managers.Scene.LoadScene(Define.Scene.Game);
-        });
-        
-        _nicknameCancelButton.onClick.AddListener(() => _confirmWindow.SetActive(false));
-    }
-
-    public void ComfirmButton()
-    {
-        if (IsInputEmpty())
-            return;
-        
-        StartGame();
     }
 }

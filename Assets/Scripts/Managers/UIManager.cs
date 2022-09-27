@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
@@ -11,7 +12,7 @@ public class UIManager
         ConfirmWindow window = Managers.Resource.Instantiate("ConfirmWindow", parent).GetComponent<ConfirmWindow>();
         window.Text = text;
         
-        window.ConfirmButton.onClick.AddListener(() =>
+        window.confirmButton.onClick.AddListener(() =>
         {
             Managers.Resource.Destroy(window.gameObject);
 
@@ -22,9 +23,25 @@ public class UIManager
         });
     }
 
-    public void ErrorWindow(string text)
+    public void WarningWindow(string text, Transform parent, bool closeParent, Action confirm)
     {
-        ErrorWindow window = Managers.Resource.Instantiate("ErrorWindow").GetComponent<ErrorWindow>();
+        WarningWindow window = Managers.Resource.Instantiate("WarningWindow", parent).GetComponent<WarningWindow>();
         window.Text = text;
+        
+        window.confirmButton.onClick.AddListener(() =>
+        {
+            Managers.Resource.Destroy(window.gameObject);
+            confirm.Invoke();
+        });
+        
+        window.cancelButton.onClick.AddListener(() =>
+        {
+            Managers.Resource.Destroy(window.gameObject);
+
+            if (closeParent)
+            {
+                Managers.Resource.Destroy(parent.gameObject);
+            }
+        });
     }
 }

@@ -1939,7 +1939,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 126
   m_CollisionDetection: 0
 --- !u!136 &4635495397773390085
 CapsuleCollider:
@@ -1967,7 +1967,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dc1e426af80cba04c8cdf74218592f77, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _walkSpeed: 5
+  walkSpeed: 5
 --- !u!1 &2218988998516128525
 GameObject:
   m_ObjectHideFlags: 0
@@ -2402,5 +2402,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e557335d870e014459f1b680935053f4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _canvas: {fileID: 5443147543535971206}
-  _nickname: {fileID: 8505287812125112562}
+  canvas: {fileID: 0}
+  nickname: {fileID: 8505287812125112562}

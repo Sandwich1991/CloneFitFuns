@@ -46,7 +46,7 @@ public class WebManager
 {
     public Action RefreshAction;
 
-    public void PostChanged()
+    public void RefreshPosts()
     {
         RefreshAction.Invoke();
     }
@@ -56,9 +56,9 @@ public class WebManager
         Managers.CoroutineHelper(GetPostsCoroutine(evt.Invoke));
     }
     
-    public void GetPost(string id, Action<DetailPost> evt)
+    public void GetDetailPost(string id, Action<DetailPost> evt)
     {
-        Managers.CoroutineHelper(GetPostCoroutine(id, evt.Invoke));
+        Managers.CoroutineHelper(GetDetailPostCoroutine(id, evt.Invoke));
     }
 
     public void CreatePost(string title, string content, Action<bool> haveSucceed)
@@ -96,7 +96,7 @@ public class WebManager
         }
     }
     
-    private IEnumerator GetPostCoroutine(string id, Action<DetailPost> evt)
+    private IEnumerator GetDetailPostCoroutine(string id, Action<DetailPost> evt)
     {
         UnityWebRequest www = UnityWebRequest.Get(Define.URL + "/" + id);
 
@@ -114,78 +114,58 @@ public class WebManager
         }
     }
     
-    private IEnumerator CreatePostCoroutine(string title, string content, Action<bool> haveSucceed)
+    private IEnumerator CreatePostCoroutine(string title, string content, Action<bool> isSucceed)
     {
         UnityWebRequest www = PostOrPutRequest("POST", title, content);
         
         yield return www.SendWebRequest();
 
-        if (www.error == null)
-        {
-            haveSucceed.Invoke(true);
-            PostChanged();
-        }
-
-        else
-        {
-            haveSucceed.Invoke(false);
-            Debug.Log(www.error);
-        }
+        PostProcessWebRequest(www, isSucceed.Invoke);
         
         www.Dispose();
     }
     
-    private IEnumerator PutPostCoroutine(string id, string title, string content, Action<bool> haveSucceed)
+    private IEnumerator PutPostCoroutine(string id, string title, string content, Action<bool> isSucceed)
     {
         UnityWebRequest www = PostOrPutRequest("PUT", title, content, id);
         
         yield return www.SendWebRequest();
         
-        if (www.error == null)
-        {
-            haveSucceed.Invoke(true);
-            PostChanged();
-        }
-        
-        else
-        {
-            haveSucceed.Invoke(false);
-            Debug.Log(www.error);
-        }
+        PostProcessWebRequest(www, isSucceed.Invoke);
         
         www.Dispose();
     }
     
-    private IEnumerator DeletePostCoroutine(string id, Action<bool> haveSucceed)
+    private IEnumerator DeletePostCoroutine(string id, Action<bool> isSucceed)
     {
         UnityWebRequest www = UnityWebRequest.Delete(Define.URL + "/" + id);
 
         yield return www.SendWebRequest();
 
-        if (www.error == null)
+        PostProcessWebRequest(www, isSucceed.Invoke);
+        
+        www.Dispose();
+    }
+
+    
+    
+    private void PostProcessWebRequest(UnityWebRequest result, Action<bool> isSucceed)
+    {
+        if (result.error == null)
         {
-            haveSucceed.Invoke(true);
-            PostChanged();
+            isSucceed.Invoke(true);
+            RefreshPosts();
         }
         else
         {
-            haveSucceed.Invoke(false);
+            isSucceed.Invoke(false);
+            Debug.Log(result.error);
         }
     }
     
-    
     private UnityWebRequest PostOrPutRequest(string method, string title, string content, string id = null)
     {
-        string url = null;
-
-        if (method == "POST")
-        {
-            url = Define.URL + "/post";
-        }
-        else
-        {
-            url = Define.URL + "/" + id;
-        }
+        string url = method == "POST" ? Define.URL + "/post" : Define.URL + "/" + id;
         
         UploadPost post = new UploadPost(title, content);
         string json = JsonUtility.ToJson(post);

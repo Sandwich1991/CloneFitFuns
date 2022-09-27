@@ -1,16 +1,14 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
 public class InputManager
 {
     // Fields
-    public Action KeyAction = null;
-    public Action<Define.MouseEvent> MouseAction = null;
+    public Action KeyAction;
+    public Action<Define.MouseEvent> MouseAction;
 
-    private bool _pressed = false;
+    private bool _pressed;
     
     // Methods
     public void OnUpdate()

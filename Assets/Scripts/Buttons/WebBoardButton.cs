@@ -1,21 +1,18 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class WebBoardButton : MonoBehaviour
 {
-    private string _webBoardUIPath = "WebBoardUI";
-    private GameObject _webBoard;
-    [SerializeField] private GameObject _mainUI;
-    
+    private const string WebBoardUIPath = "WebBoardUI";
+    private Button _button;
 
-    public void LoadWebBorad()
+    private void Start()
     {
-        _webBoard = Managers.Resource.Instantiate(_webBoardUIPath, _mainUI.transform);
-    }
-
-    public void DestroyBoard()
-    {
-        Managers.Resource.Destroy(_webBoard);
+        _button = GetComponent<Button>();
+        
+        _button.onClick.AddListener(() =>
+        {
+            Managers.Resource.Instantiate(WebBoardUIPath, Game.MainUI);
+        });
     }
 }

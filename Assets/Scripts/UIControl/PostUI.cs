@@ -37,28 +37,16 @@ public class PostUI : MonoBehaviour
 
     void DeleteButton()
     {
-        WarningWindow window = Managers.Resource.Instantiate("WarningWindow", gameObject.transform)
-            .GetComponent<WarningWindow>();
-        window.Text = "정말로 삭제하시겠습니까?";
-            
-        window.ConfirmButton.onClick.AddListener(() =>
+        Managers.UI.WarningWindow("정말 삭제하시겠습니까?", transform, true, () =>
         {
-            Managers.Resource.Destroy(window.gameObject);
+            Managers.UI.ConfirmWindow("삭제가 완료되었습니다!", transform, true);
             DeletePost();
         });
     }
 
     void EditButton()
     {
-        WarningWindow window = Managers.Resource.Instantiate("WarningWindow", gameObject.transform)
-            .GetComponent<WarningWindow>();
-        window.Text = "게시물을 수정하시겠습니까?";
-            
-        window.ConfirmButton.onClick.AddListener(() =>
-        {
-            Managers.Resource.Destroy(window.gameObject);
-            EditPost();
-        });
+        Managers.UI.WarningWindow("수정하시겠습니까?", transform, true, EditPost);
     }
 
     // 포스트 삭제

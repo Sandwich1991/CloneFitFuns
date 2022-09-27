@@ -1,55 +1,32 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class SoundButton : MonoBehaviour
 {
-    private Sprite _soundPlaying;
-    private string _soundPlayingPath = "Icons/SoundOn";
+    private Sprite _spritePlaying;
+    private const string PathPlaying = "Icons/SoundOn";
     
-    private Sprite _mute;
-    private string _mutePath = "Icons/SoundMute";
+    private Sprite _spriteMute;
+    private const string PathMute = "Icons/SoundMute";
     
-    private Image _imageComponent;
+    private Image _image;
+
+    private Button _button;
 
     private void Start()
     {
-        _soundPlaying = Managers.Resource.Load<Sprite>(_soundPlayingPath);
-        _mute = Managers.Resource.Load<Sprite>(_mutePath);
-        _imageComponent = GetComponent<Image>();
-    }
+        _spritePlaying = Managers.Resource.Load<Sprite>(PathPlaying);
+        _spriteMute = Managers.Resource.Load<Sprite>(PathMute);
 
-    void ToggleImage()
-    {
-        switch (Managers.Sound.IsPlaying)
-        {
-            case Define.SoundState.Playing:
-                _imageComponent.sprite = _soundPlaying;
-                break;
-            
-            case Define.SoundState.Mute:
-                _imageComponent.sprite = _mute;
-                break;
-        }
-    }
-
-    public void ToggleMute()
-    {
-        switch (Managers.Sound.IsPlaying)
-        {
-            case Define.SoundState.Playing:
-                Managers.Sound.IsPlaying = Define.SoundState.Mute;
-                ToggleImage();
-                break;
-            
-            case Define.SoundState.Mute:
-                Managers.Sound.IsPlaying = Define.SoundState.Playing;
-                ToggleImage();
-                break;
-        }
+        _image = GetComponent<Image>();
+        _button = GetComponent<Button>();
+        
+        _button.onClick.AddListener(ToggleMute);
     }
     
-    
+    private void ToggleMute()
+    {
+        Managers.Sound.IsPlaying = !Managers.Sound.IsPlaying;
+        _image.sprite = Managers.Sound.IsPlaying ? _spritePlaying : _spriteMute;
+    }
 }

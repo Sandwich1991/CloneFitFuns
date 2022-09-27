@@ -1,46 +1,22 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
-    // Fields
     private Define.PlayerState _playerState;
     private Animator _animator;
     private Vector3 _desPos;
     private Camera _camera;
-    [SerializeField] private float _walkSpeed = 5f;
-
-    private string _stepSoundPath = "Sounds/Walk";
-    
     private int _moveBlockMask = (1 << (int)Define.Layer.Block) | (1 << (int)Define.Layer.Clickable);
     
-    // Property
-    Define.PlayerState PlayerState
-    {
-        get { return _playerState; }
-        set
-        {
-            _playerState = value;
-            switch (PlayerState)
-            {
-                case Define.PlayerState.Idle:
-                    _animator.Play("Idle");
-                    break;
-                
-                case Define.PlayerState.Walk:
-                    _animator.Play("Walk");
-                    break;
-            }
-        }
-    }
+    private const string PathStepSound = "Sounds/Walk";
     
-    // Methods
+    [SerializeField] private float walkSpeed = 5f;
+    
+    
     void UpdateIdle()
     {
-        
+        _animator.Play("Idle");
     }
 
     void UpdateWalk()
@@ -48,20 +24,22 @@ public class PlayerController : MonoBehaviour
         Vector3 dir = _desPos - transform.position;
         
         if (dir.magnitude < 0.1f)
-            PlayerState = Define.PlayerState.Idle;
+            _playerState = Define.PlayerState.Idle;
         
         else 
         {
             if (Physics.Raycast(transform.position + Vector3.up * 0.3f, dir, 1f, _moveBlockMask))
             {
                 if (Input.GetMouseButton(0) == false)
-                    PlayerState = Define.PlayerState.Idle;
+                    _playerState = Define.PlayerState.Idle;
                 return;
             }
             
-            float distToMove = Math.Clamp(_walkSpeed * Time.deltaTime, 0, dir.magnitude);
+            float distToMove = Math.Clamp(walkSpeed * Time.deltaTime, 0, dir.magnitude);
             transform.position += dir.normalized * distToMove;
             transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(dir), 10 * Time.deltaTime);
+            
+            _animator.Play("Walk");
         }
         
     }
@@ -73,16 +51,15 @@ public class PlayerController : MonoBehaviour
         if (Physics.Raycast(ray, out hit, 100f, LayerMask.GetMask("Ground")))
         {
             _desPos = hit.point;
-            PlayerState = Define.PlayerState.Walk;
+            _playerState = Define.PlayerState.Walk;
         }
     }
 
     public void FootStep()
     {
-        Managers.Sound.Play(_stepSoundPath, Define.SoundType.Effect, 1.0f);
+        Managers.Sound.Play(PathStepSound, Define.SoundType.Effect, 1.0f);
     }
-
-    // MonoBehaviour
+    
     private void Start()
     {
         _camera = Camera.main;
@@ -94,7 +71,7 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
-        switch (PlayerState)
+        switch (_playerState)
         {
             case Define.PlayerState.Idle:
                 UpdateIdle();
@@ -103,7 +80,5 @@ public class PlayerController : MonoBehaviour
                 UpdateWalk();
                 break;
         }
-        
-        
     }
 }

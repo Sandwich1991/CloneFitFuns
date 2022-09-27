@@ -5,11 +5,7 @@ using UnityEngine;
 
 public class Managers : MonoBehaviour
 {
-    // Fields
     private static Managers _instance = null;
-    public static Managers Instance { get { init(); return _instance; } }
-    
-    // Managers
     private InputManager _input = new InputManager();
     private ResourceManager _resource = new ResourceManager();
     private PlayerManager _player = new PlayerManager();
@@ -18,14 +14,16 @@ public class Managers : MonoBehaviour
     private SceneManagerEX _sceneManager = new SceneManagerEX();
     private WebManager _web = new WebManager();
     private UIManager _ui = new UIManager();
-    public static InputManager Input { get { return Instance._input; } }
-    public static ResourceManager Resource { get { return Instance._resource; } }
-    public static PlayerManager Player { get { return Instance._player; } }
-    public static SoundManager Sound { get { return Instance._sound; } }
-    public static VideoManager Video { get { return Instance._video; } }
-    public static SceneManagerEX Scene { get { return Instance._sceneManager; } }
-    public static WebManager Web { get { return Instance._web; } }
-    public static UIManager UI { get { return Instance._ui; } }
+    
+    public static Managers Instance { get { init(); return _instance; } }
+    public static InputManager Input => Instance._input;
+    public static ResourceManager Resource => Instance._resource;
+    public static PlayerManager Player => Instance._player;
+    public static SoundManager Sound => Instance._sound;
+    public static VideoManager Video => Instance._video;
+    public static SceneManagerEX Scene => Instance._sceneManager;
+    public static WebManager Web => Instance._web;
+    public static UIManager UI => Instance._ui;
 
     // Methods
     static void init()
@@ -43,7 +41,6 @@ public class Managers : MonoBehaviour
                 _instance = go.GetComponent<Managers>();
                 
                 _instance._sound.init();
-                _instance._sceneManager.init();
             }
         }
     }
@@ -58,7 +55,7 @@ public class Managers : MonoBehaviour
         Input.Clear();
     }
     
-    // MonoBehaviour
+    
     private void Start()
     {
         init();

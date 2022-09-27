@@ -7,8 +7,6 @@ using UnityEngine.Networking;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
 
-
-
 public class WebBoardUI : MonoBehaviour
 {
     [SerializeField] private GameObject _posts;
@@ -34,11 +32,11 @@ public class WebBoardUI : MonoBehaviour
             {
                 foreach (var postData in postList.getPostList)
                 {
-                    Post post = Managers.Resource.Instantiate("Post", _posts.transform).GetComponent<Post>();
+                    PostCard postCard = Managers.Resource.Instantiate("Post", _posts.transform).GetComponent<PostCard>();
 
-                    post.PostData = postData;
+                    postCard.Data = postData;
 
-                    post.Button.onClick.AddListener(() => GetPost(postData.postId));
+                    postCard.button.onClick.AddListener(() => GetDetailPost(postData.postId));
                 }
             }
             else
@@ -48,9 +46,9 @@ public class WebBoardUI : MonoBehaviour
         });
     }
     
-    void GetPost(string id)
+    void GetDetailPost(string id)
     {
-        Managers.Web.GetPost(id, (postData) =>
+        Managers.Web.GetDetailPost(id, (postData) =>
         {
             if (postData != null)
             {
@@ -73,11 +71,11 @@ public class WebBoardUI : MonoBehaviour
     // 포스트 수정이나 삭제가 이루어지면 포스트 목록을 새로고침
     void Refresh()
     {
-        Post[] posts = _posts.GetComponentsInChildren<Post>();
+        PostCard[] posts = _posts.GetComponentsInChildren<PostCard>();
 
-        foreach (Post post in posts)
+        foreach (PostCard postCard in posts)
         {
-            Managers.Resource.Destroy(post.gameObject);
+            Managers.Resource.Destroy(postCard.gameObject);
         }
         
         GetPosts();

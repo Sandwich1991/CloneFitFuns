@@ -13,11 +13,13 @@ public class SceneManagerEX
     {
         Managers.Clear();
         Managers.CoroutineHelper(LoadSceneProgress(type));
-        
     }
 
     IEnumerator LoadSceneProgress(Define.Scene type)
     {
+        _loadingScreen = Managers.Resource.Instantiate("LoadingScreen");
+        _progressbar = _loadingScreen.transform.Find("ProgressionBar").GetComponent<Slider>();
+        
         AsyncOperation operation = SceneManager.LoadSceneAsync(GetSceneName(type));
 
         operation.allowSceneActivation = false;
@@ -49,11 +51,5 @@ public class SceneManagerEX
     {
         string name = System.Enum.GetName(typeof(Define.Scene), type);
         return name;
-    }
-
-    public void init()
-    {
-        _loadingScreen = Managers.Resource.Instantiate("LoadingScreen");
-        _progressbar = _loadingScreen.transform.Find("ProgressionBar").GetComponent<Slider>();
     }
 }

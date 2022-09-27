@@ -135,10 +135,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ea14edad561739547be82e4ea942243c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _title: {fileID: 155585707151818592}
-  _content: {fileID: 3139508511491841480}
-  _date: {fileID: 3989953380151420958}
-  Button: {fileID: 0}
+  title: {fileID: 155585707151818592}
+  content: {fileID: 3139508511491841480}
+  date: {fileID: 3989953380151420958}
 --- !u!222 &1728297858078256720
 CanvasRenderer:
   m_ObjectHideFlags: 0

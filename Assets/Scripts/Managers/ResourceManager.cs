@@ -29,7 +29,14 @@ public class ResourceManager
     
     public void Destroy(GameObject go)
     {
-        Object.Destroy(go);
+        if (go == null)
+        {
+            return;
+        }
+        else
+        {
+            Object.Destroy(go);
+        }
     }
 }
 

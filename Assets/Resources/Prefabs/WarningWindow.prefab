@@ -92,9 +92,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 44a49786fa718744cb5488eb080c1550, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ConfirmButton: {fileID: 8716561433169878713}
-  CancleButton: {fileID: 4355516648363575658}
-  _text: {fileID: 2339119300402202723}
+  confirmButton: {fileID: 8716561433169878713}
+  cancelButton: {fileID: 4355516648363575658}
+  text: {fileID: 2339119300402202723}
 --- !u!1 &2940116937697851162
 GameObject:
   m_ObjectHideFlags: 0
@@ -453,7 +453,7 @@ MonoBehaviour:
     m_Alignment: 4
     m_AlignByGeometry: 0
     m_RichText: 1
-    m_HorizontalOverflow: 0
+    m_HorizontalOverflow: 1
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: "\uC5EC\uAE30\uB85C \uC774\uB3D9\uD569\uB2C8\uB2E4!"

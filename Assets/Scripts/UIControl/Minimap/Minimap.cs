@@ -6,26 +6,29 @@ using UnityEngine.UI;
 
 public class Minimap : MonoBehaviour
 {
-    [SerializeField] Camera _miniCam;
-    [SerializeField] private RectTransform _playerMarker;
-    [SerializeField] private RectTransform _map;
-    [SerializeField] private Button _minimapButton;
+    [SerializeField] private Camera miniCam;
+    [SerializeField] private RectTransform playerMarker;
+    
+    private RectTransform _map;
 
-    private bool _isActive = false;
+    void UpdatePlayerPos()
+    {
+        Vector2 playerPos = miniCam.WorldToViewportPoint(Managers.Player.PlayerPos);
+        Rect mapRect = _map.rect;
+
+        float xPos = playerPos.x * mapRect.width;
+        float yPos = playerPos.y * mapRect.height;
+
+        playerMarker.anchoredPosition = new Vector2(xPos, yPos);
+    }
+    
+    private void Start()
+    {
+        _map = GetComponent<RectTransform>();
+    }
 
     private void Update()
     {
-        Vector2 playerPos = _miniCam.WorldToViewportPoint(Managers.Player.PlayerPos);
-
-        _playerMarker.anchoredPosition = new Vector2(playerPos.x * _map.rect.width, playerPos.y * _map.rect.height);
+        UpdatePlayerPos();
     }
-
-    public void ActiveMap()
-    {
-        _map.gameObject.SetActive(_isActive? false : true);
-
-        _isActive = _map.gameObject.activeSelf;
-    }
-    
-    
 }

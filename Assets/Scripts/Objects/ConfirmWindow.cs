@@ -6,7 +6,12 @@ using UnityEngine.UI;
 
 public class ConfirmWindow : MonoBehaviour
 {
-    [SerializeField] private Text _text;
-    public Button ConfirmButton;
-    public string Text { get { return _text.text; } set { _text.text = value; } }
+    [SerializeField] private Text text;
+    
+    public Button confirmButton;
+    public string Text
+    {   
+        get => text.text;
+        set => text.text = value;
+    }
 }

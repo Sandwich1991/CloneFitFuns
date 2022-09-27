@@ -4,11 +4,20 @@ using UnityEngine;
 
 public class SoundManager
 {
+    public float BgmVolume = 0.5f;
+    public float EffectVolume = 0.5f;
+    
     private AudioSource[] _audioSources = new AudioSource[(int)Define.SoundType.MaxCount];
 
     private Dictionary<string, AudioClip> _audioClips = new Dictionary<string, AudioClip>();
     
-    public Define.SoundState IsPlaying = Define.SoundState.Playing;
+    private Define.SoundState _isPlaying = Define.SoundState.Playing;
+    
+    public bool IsPlaying
+    {
+        get => _isPlaying == Define.SoundState.Playing;
+        set => _isPlaying = value == true ? Define.SoundState.Playing : Define.SoundState.Mute;
+    }
 
 
     public void init()
@@ -28,8 +37,8 @@ public class SoundManager
                 go.transform.parent = root.transform;
             }
             _audioSources[(int)Define.SoundType.Bgm].loop = true;
-            _audioSources[(int)Define.SoundType.Bgm].volume = 0.5f;
-            _audioSources[(int)Define.SoundType.Effect].volume = 1.0f;
+            _audioSources[(int)Define.SoundType.Bgm].volume = BgmVolume;
+            _audioSources[(int)Define.SoundType.Effect].volume = EffectVolume;
         }
     }
 
@@ -116,7 +125,7 @@ public class SoundManager
             audioSource.mute = true;
         }
 
-        IsPlaying = Define.SoundState.Mute;
+        IsPlaying = false;
     }
 
     public void UnMute()
@@ -126,18 +135,18 @@ public class SoundManager
             audioSource.mute = false;
         }
 
-        IsPlaying = Define.SoundState.Playing;
+        IsPlaying = true;
     }
 
     public void OnUpdate()
     {
         switch (IsPlaying)
         {
-            case Define.SoundState.Playing:
+            case true:
                 UnMute();
                 break;
             
-            case Define.SoundState.Mute:
+            case false:
                 Mute();
                 break;
         }

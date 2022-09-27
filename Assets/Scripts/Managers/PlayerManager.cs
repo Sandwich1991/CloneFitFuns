@@ -4,26 +4,23 @@ using UnityEngine;
 
 public class PlayerManager
 {
-    public GameObject _player;
-    public PlayerController _controller;
-    private Rigidbody _rigidbody;
-    private string _nickname;
-    public string Nickname
-    {
-        get { return _nickname; }
-        set { _nickname = value; }
-    }
-    
+    private GameObject _player;
+    private PlayerController _controller;
+
+    public Transform PlayerTransform => _player.transform;
+
+    public string Nickname { get; set; }
+
     public Vector3 PlayerPos
     {
-        get { return _player.transform.position; }
-        set { _player.transform.position = value; }
+        get => _player.transform.position;
+        set => _player.transform.position = value;
     }
-    
+
     public GameObject GeneratePlayer(Vector3 pos)
     {
         _player = Managers.Resource.Instantiate("Character");
-        _player.transform.position = pos;
+        PlayerPos = pos;
         
         _controller = _player.GetComponent<PlayerController>();
         if (_controller == null)
@@ -31,14 +28,6 @@ public class PlayerManager
             _player.AddComponent<PlayerController>();
             _controller = _player.GetComponent<PlayerController>();
         }
-
-        _rigidbody = _player.GetComponent<Rigidbody>();
-        if (_rigidbody == null)
-        {
-            _player.AddComponent<Rigidbody>();
-            _rigidbody = _player.GetComponent<Rigidbody>();
-        }
-        _rigidbody.constraints = RigidbodyConstraints.FreezeRotation;
 
         _player.name = Nickname;
         
