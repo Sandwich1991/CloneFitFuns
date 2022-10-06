@@ -14,6 +14,7 @@ public class Managers : MonoBehaviour
     private SceneManagerEX _sceneManager = new SceneManagerEX();
     private WebManager _web = new WebManager();
     private UIManager _ui = new UIManager();
+    private NoticeManager _notice = new NoticeManager();
     
     public static Managers Instance { get { init(); return _instance; } }
     public static InputManager Input => Instance._input;
@@ -24,6 +25,7 @@ public class Managers : MonoBehaviour
     public static SceneManagerEX Scene => Instance._sceneManager;
     public static WebManager Web => Instance._web;
     public static UIManager UI => Instance._ui;
+    public static NoticeManager Notice => Instance._notice;
 
     // Methods
     static void init()
@@ -41,6 +43,7 @@ public class Managers : MonoBehaviour
                 _instance = go.GetComponent<Managers>();
                 
                 _instance._sound.init();
+                _instance._notice.init();
             }
         }
     }

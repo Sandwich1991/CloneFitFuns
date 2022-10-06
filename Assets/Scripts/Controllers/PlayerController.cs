@@ -7,7 +7,7 @@ public class PlayerController : MonoBehaviour
     private Animator _animator;
     private Vector3 _desPos;
     private Camera _camera;
-    private int _moveBlockMask = (1 << (int)Define.Layer.Block) | (1 << (int)Define.Layer.Clickable);
+    private readonly int _moveBlockMask = (1 << (int)Define.Layer.Block) | (1 << (int)Define.Layer.Clickable);
     
     private const string PathStepSound = "Sounds/Walk";
     
@@ -41,7 +41,6 @@ public class PlayerController : MonoBehaviour
             
             _animator.Play("Walk");
         }
-        
     }
 
     void OnMouse(Define.MouseEvent @event)
@@ -54,7 +53,7 @@ public class PlayerController : MonoBehaviour
             _playerState = Define.PlayerState.Walk;
         }
     }
-
+    
     public void FootStep()
     {
         Managers.Sound.Play(PathStepSound, Define.SoundType.Effect, 1.0f);

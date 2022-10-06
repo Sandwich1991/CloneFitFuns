@@ -79,7 +79,6 @@ public class WebManager
     
     private IEnumerator GetPostsCoroutine(Action<PostList> evt)
     {
-
         UnityWebRequest www = UnityWebRequest.Get(Define.URL);
 
         yield return www.SendWebRequest();

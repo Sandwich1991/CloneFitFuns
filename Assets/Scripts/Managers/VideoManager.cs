@@ -7,7 +7,7 @@ public class VideoManager
 {
     private GameObject _mediaPlayerUI;
     private MediaPlayer _mediaPlayer;
-    private string MediaPlayerUIPath = "VideoPlayerUI";
+    private const string PathMediaPlayerUI = "VideoPlayerUI";
 
     public GameObject MediaPlayerUI
     {
@@ -31,7 +31,7 @@ public class VideoManager
     {
         if (_mediaPlayerUI == null)
         {
-            GameObject go = Managers.Resource.Instantiate(MediaPlayerUIPath);
+            GameObject go = Managers.Resource.Instantiate(PathMediaPlayerUI);
             return go;
         }
 
