@@ -6,6 +6,8 @@ public class PlayerManager
 {
     private GameObject _player;
     private PlayerController _controller;
+    
+    public int Trash { get; set; }
 
     public Transform PlayerTransform => _player.transform;
 

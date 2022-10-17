@@ -21,7 +21,8 @@ public class ResourceManager
             return null;
         }
         
-        GameObject go = Object.Instantiate(original, parent);
+        GameObject go = Object.Instantiate(original, parent, true);
+
         go.name = original.name;
         
         return go;
