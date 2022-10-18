@@ -6,7 +6,7 @@ public class PlayerManager
 {
     private GameObject _player;
     private PlayerController _controller;
-    
+
     public int Trash { get; set; }
 
     public Transform PlayerTransform => _player.transform;
@@ -18,6 +18,8 @@ public class PlayerManager
         get => _player.transform.position;
         set => _player.transform.position = value;
     }
+    
+    public Vector3 PlayerRot => _player.transform.eulerAngles;
 
     public GameObject GeneratePlayer(Vector3 pos)
     {
@@ -34,5 +36,15 @@ public class PlayerManager
         _player.name = Nickname;
         
         return _player;
+    }
+
+    public void DisableMove()
+    {
+        Object.Destroy(_controller);
+    }
+
+    public void EnableMove()
+    {
+        _controller = _player.AddComponent<PlayerController>();
     }
 }

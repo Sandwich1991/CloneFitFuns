@@ -5,9 +5,10 @@ using UnityEngine;
 
 public class Game : MonoBehaviour
 {
+    private static GameObject _mainUI;
+    
     private const string MainUIPath = "MainUI";
     private const string BGMPath = "Sounds/BGM_03";
-    private static GameObject _mainUI;
     private GameObject _player;
     private CameraController _cameraController;
     private Camera _camera;

@@ -31,8 +31,6 @@ public class PlayZone : MonoBehaviour
         MakeItem(aBox, ref aQuantity, ref ACurItems, "ItemA");
         MakeItem(bBox, ref bQuantity, ref BCurItems, "ItemB");
         MakeItem(cBox, ref cQuantity, ref CCurItems, "ItemC");
-        
-        print($"Azone : {ACurItems}  Bzone : {BCurItems}  Czone : {CCurItems}");
     }
 
     private void MakeItem(BoxCollider boxCollider, ref int itemQuantity, ref int curItems, string itemPath)
