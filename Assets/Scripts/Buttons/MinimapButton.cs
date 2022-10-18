@@ -18,6 +18,8 @@ public class MinimapButton : MonoBehaviour
         if (!_isActive)
         {
              _minimap = Managers.Resource.Instantiate("Minimap", Game.MainUI);
+             RectTransform rect = _minimap.GetComponent<RectTransform>();
+             rect.anchoredPosition = new Vector2(40, -40);
         }
         else
         {
